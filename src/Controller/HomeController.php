@@ -12,7 +12,7 @@ class HomeController extends AbstractController
     public function index(): Response
     {
         return $this->render('home/index.html.twig', [
-            'title' => 'Welcome to My Shop',
+            'title' => 'Home page',
             'subtitle' => 'Your one-stop place for awesome products!'
         ]);
     }
