@@ -19,7 +19,7 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $category_key = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $parent_category_key = null;
 
     #[ORM\Column(length: 255)]
@@ -62,7 +62,7 @@ class Category
         return $this->parent_category_key;
     }
 
-    public function setParentCategoryKey(string $parent_category_key): static
+    public function setParentCategoryKey(?string $parent_category_key): static
     {
         $this->parent_category_key = $parent_category_key;
 
