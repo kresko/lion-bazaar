@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Validator\CategoryValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -10,13 +12,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CategoryController extends AbstractController
 {
+    /**
+     * @var string
+     */
+    public const CATEGORIES = 'categories';
+
     #[Route('/category', name: 'category_create', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em): JsonResponse
+    public function create(Request $request, EntityManagerInterface $em, CategoryValidator $validator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         if (!$data) {
             return $this->json(['error' => 'Invalid JSON'], 400);
         }
+
+        $data = $validator->validate($data); // Add validator result here
 
         // $category = new Category();
         // $category
@@ -30,9 +39,8 @@ class CategoryController extends AbstractController
         // $em->flush();
 
         return $this->json([
-            // 'status' => 'Category created',
-            // 'id' => $category->getId(),
-            // 'category_key' => $category->getCategoryKey(),
+            'status' => 'Category created',
+            'errors' => $data[CategoryValidator::ERRORS] ?? []
         ]);
     }
 }
