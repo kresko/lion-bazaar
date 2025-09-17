@@ -27,20 +27,56 @@ class CategoryController extends AbstractController
 
         $data = $validator->validate($data);
 
-        // $category = new Category();
-        // $category
-        //     ->setNodeOrder((int)($data['node_order'] ?? 0))
-        //     ->setCategoryKey($data['category_key'] ?? '')
-        //     ->setParentCategoryKey($data['parent_category_key'] ?? null)
-        //     ->setName($data['name'] ?? 'Unnamed')
-        //     ->setIsRoot((bool)($data['is_root'] ?? false));
+        $categoryRepository = $em->getRepository(Category::class);
+        $created = [];
+        $updated = [];
 
-        // $em->persist($category);
-        // $em->flush();
+        foreach ($data[self::CATEGORIES] as $categoryData) {
+            $category = $categoryRepository->findOneBy(['category_key' => $categoryData['category_key']]);
+
+            if (!$category) {
+                $category = new Category();
+                $created[] = $categoryData['category_key'];
+            } else {
+                $updated[] = $categoryData['category_key'];
+            }
+
+            $category
+                ->setNodeOrder((int)($categoryData['node_order']))
+                ->setCategoryKey($categoryData['category_key'])
+                ->setParentCategoryKey($categoryData['parent_category_key'])
+                ->setName($categoryData['name'])
+                ->setIsRoot((bool)($categoryData['is_root']));
+
+            $em->persist($category);
+        }
+
+        $em->flush();
 
         return $this->json([
             'status' => 'Category created',
+            'created' => $created,
+            'updated' => $updated,
             'errors' => $data[CategoryValidator::ERRORS] ?? []
+        ]);
+    }
+
+    #[Route('/category/{category_key}', name: 'category_delete', methods: ['DELETE'])]
+    public function delete(string $category_key, EntityManagerInterface $em): JsonResponse
+    {
+        $categoryRepository = $em->getRepository(Category::class);
+        $category = $categoryRepository->findOneBy(['category_key' => $category_key]);
+
+        if (!$category) {
+            return $this->json(['error' => 'Category not found'], 404);
+        }
+
+        $em->remove($category);
+        $em->flush();
+
+        return $this->json([
+            'status' => 'Category deleted',
+            'category_key' => $category_key,
         ]);
     }
 }
