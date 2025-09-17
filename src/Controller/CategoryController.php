@@ -25,7 +25,7 @@ class CategoryController extends AbstractController
             return $this->json(['error' => 'Invalid JSON'], 400);
         }
 
-        $data = $validator->validate($data); // Add validator result here
+        $data = $validator->validate($data);
 
         // $category = new Category();
         // $category
