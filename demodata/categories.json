@@ -1,0 +1,53 @@
+{
+    "categories": [
+        {
+	        "node_order": 0,
+            "category_key": "0000",
+            "parent_category_key": null,
+            "name": "root",
+            "is_root": true
+        },
+        {
+            "node_order": 10,
+            "category_key": "1000",
+            "parent_category_key": "0000",
+            "name": "groceries",
+            "is_root": false
+        },
+        {
+            "node_order": 10,
+            "category_key": "1001",
+            "parent_category_key": "1000",
+            "name": "fruits",
+            "is_root": false
+        },
+        {
+            "node_order": 20,
+            "category_key": "1002",
+            "parent_category_key": "1000",
+            "name": "meat",
+            "is_root": false
+        },
+        {
+            "node_order": 10,
+            "category_key": "2000",
+            "parent_category_key": "0000",
+            "name": "electronics",
+            "is_root": false
+        },
+        {
+            "node_order": 20,
+            "category_key": "2002",
+            "parent_category_key": "2000",
+            "name": "smartphones",
+            "is_root": false
+        },
+        {
+            "node_order": 10,
+            "category_key": "2001",
+            "parent_category_key": "2000",
+            "name": "computers",
+            "is_root": false
+        }
+    ]
+}
