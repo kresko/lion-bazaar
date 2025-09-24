@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Command;
 
 use App\Entity\Category;
@@ -64,9 +65,11 @@ class BuildCategoryTreeCommand extends Command
         $categoryTree = $this->em->getRepository(CategoryTree::class)->findOneBy([]);
         if (!$categoryTree) {
             $categoryTree = new CategoryTree();
+            $categoryTree->setCreatedAtValue(new \DateTimeImmutable());
         }
         
         $categoryTree->setTreeJson($tree);
+        $categoryTree->setUpdatedAtValue(new \DateTime());
 
         $this->em->persist($categoryTree);
         $this->em->flush();

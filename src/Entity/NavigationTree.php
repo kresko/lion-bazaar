@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: "category_tree")]
+#[ORM\Table(name: "navigation_tree")]
 #[ORM\HasLifecycleCallbacks]
-class CategoryTree
+class NavigationTree
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -17,10 +17,10 @@ class CategoryTree
     #[ORM\Column(name: "tree_json", type: "json")]
     private array $treeJson = [];
 
-    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    #[ORM\Column(type: "datetime_immutable")]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
+    #[ORM\Column(type: "datetime")]
     private ?\DateTime $updatedAt = null;
 
 
@@ -38,7 +38,7 @@ class CategoryTree
         $this->treeJson = $treeJson; return $this; 
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }

@@ -6,6 +6,7 @@ use App\Repository\CategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Category
 {
     #[ORM\Id]
@@ -27,6 +28,13 @@ class Category
 
     #[ORM\Column]
     private ?bool $is_root = null;
+
+    #[ORM\Column(type: "datetime_immutable")]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(type: "datetime")]
+    private ?\DateTime $updatedAt = null;
+
 
     public function getId(): ?int
     {
@@ -91,5 +99,28 @@ class Category
         $this->is_root = $is_root;
 
         return $this;
+    }
+
+     public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): ?\DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTime();
+    }
+
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue(): void
+    {
+        $this->updatedAt = new \DateTime();
     }
 }
