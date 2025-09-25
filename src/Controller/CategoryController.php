@@ -36,6 +36,7 @@ class CategoryController extends AbstractController
 
             if (!$category) {
                 $category = new Category();
+                $category->setCreatedAtValue(new \DateTimeImmutable());
                 $created[] = $categoryData['category_key'];
             } else {
                 $updated[] = $categoryData['category_key'];
@@ -46,7 +47,8 @@ class CategoryController extends AbstractController
                 ->setCategoryKey($categoryData['category_key'])
                 ->setParentCategoryKey($categoryData['parent_category_key'])
                 ->setName($categoryData['name'])
-                ->setIsRoot((bool)($categoryData['is_root']));
+                ->setIsRoot((bool)($categoryData['is_root']))
+                ->setUpdatedAtValue(new \DateTime());
 
             $em->persist($category);
         }
