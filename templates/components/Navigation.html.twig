@@ -1,0 +1,9 @@
+<div>
+    <h3>test header</h3>
+
+    <ul>
+        {% for navigationItem in this.getNavigationTree %}
+            <li><a href="#">{{ navigationItem.name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
