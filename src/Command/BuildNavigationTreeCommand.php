@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Category;
-use App\Entity\CategoryTree;
+use App\Entity\Url;
 use App\Entity\NavigationTree;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -32,9 +32,13 @@ class BuildNavigationTreeCommand extends Command
         $categoryRepository = $this->em->getRepository(Category::class);
         $categories = $categoryRepository->findAll();
 
+        $urlRepository = $this->em->getRepository(Url::class);
+
         // Index categories by category_key for easy lookup
         $categoriesByKey = [];
         foreach ($categories as $category) {
+            $url = $urlRepository->findOneBy(['category' => $category]);
+
             if ($category->getParentCategoryKey() === static::ROOT_CATEGORY || $category->isRoot()) {
                 $categoriesByKey[$category->getCategoryKey()] = [
                     'id_category' => $category->getId(),
@@ -42,6 +46,7 @@ class BuildNavigationTreeCommand extends Command
                     'category_key' => $category->getCategoryKey(),
                     'parent_category_key' => $category->getParentCategoryKey(),
                     'name' => $category->getName(),
+                    'url' => $url ? $url->getUrl() : null,
                     'is_root' => $category->isRoot(),
                     'children' => [],
                 ];

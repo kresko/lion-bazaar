@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Url;
 use App\Validator\CategoryValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,38 +28,13 @@ class CategoryController extends AbstractController
 
         $data = $validator->validate($data);
 
-        $categoryRepository = $em->getRepository(Category::class);
-        $created = [];
-        $updated = [];
-
-        foreach ($data[self::CATEGORIES] as $categoryData) {
-            $category = $categoryRepository->findOneBy(['category_key' => $categoryData['category_key']]);
-
-            if (!$category) {
-                $category = new Category();
-                $category->setCreatedAtValue(new \DateTimeImmutable());
-                $created[] = $categoryData['category_key'];
-            } else {
-                $updated[] = $categoryData['category_key'];
-            }
-
-            $category
-                ->setNodeOrder((int)($categoryData['node_order']))
-                ->setCategoryKey($categoryData['category_key'])
-                ->setParentCategoryKey($categoryData['parent_category_key'])
-                ->setName($categoryData['name'])
-                ->setIsRoot((bool)($categoryData['is_root']))
-                ->setUpdatedAtValue(new \DateTime());
-
-            $em->persist($category);
-        }
-
-        $em->flush();
+        $records = $this->importCategories($em, $data);
+        $records = $this->importUrls($em, $data, $records);
 
         return $this->json([
             'status' => 'Category created',
-            'created' => $created,
-            'updated' => $updated,
+            'created' => $records['created'],
+            'updated' => $records['updated'],
             'errors' => $data[CategoryValidator::ERRORS] ?? []
         ]);
     }
@@ -80,5 +56,81 @@ class CategoryController extends AbstractController
             'status' => 'Category deleted',
             'category_key' => $category_key,
         ]);
+    }
+
+    protected function importCategories(EntityManagerInterface $em, array $data): array
+    {
+        $categoryRepository = $em->getRepository(Category::class);
+        $created = [];
+        $updated = [];
+
+        foreach ($data[self::CATEGORIES] as $categoryData) {
+            $category = $categoryRepository->findOneBy(['category_key' => $categoryData['category_key']]);
+
+            if (!$category) {
+                $category = new Category();
+                $category->setCreatedAtValue(new \DateTimeImmutable());
+                $created[] = 'Category: ' . $categoryData['category_key'];
+            } else {
+                $updated[] = 'Category: ' . $categoryData['category_key'];
+            }
+
+            $category
+                ->setNodeOrder((int)($categoryData['node_order']))
+                ->setCategoryKey($categoryData['category_key'])
+                ->setParentCategoryKey($categoryData['parent_category_key'])
+                ->setName($categoryData['name'])
+                ->setIsRoot((bool)($categoryData['is_root']))
+                ->setUpdatedAtValue(new \DateTime());
+
+            $em->persist($category);
+        }
+
+        $em->flush();
+
+        return [
+            'created' => $created,
+            'updated' => $updated,
+        ];
+    }
+
+    protected function importUrls(EntityManagerInterface $em, array $data, array $records): array
+    {
+        $urlRepository = $em->getRepository(Url::class);
+        $categoryRepository = $em->getRepository(Category::class);
+
+        foreach ($data[self::CATEGORIES] as $categoryData) {
+            $category = $categoryRepository->findOneBy(['category_key' => $categoryData['category_key']]);
+
+            if (!$category) {
+                continue;
+            }
+
+            $url = $urlRepository->findOneBy(['category' => $category->getId()]);
+
+            if (!$url) {
+                $url = new Url();
+
+                $url
+                    ->setCategory($category)
+                    ->setUrl('/c/' . $categoryData["name"])
+                    ->setCreatedAtValue(new \DateTimeImmutable());
+
+                $records['created'][] = 'Url: ' . $categoryData['category_key'];
+            } else {
+                $url
+                    ->setCategory($category->getId())
+                    ->setUrl('/c/' . $category->getName())
+                    ->setUpdatedAtValue(new \DateTime());
+
+                $records['updated'][] = 'Url: ' . $categoryData['category_key'];
+            }
+
+            $em->persist($url);
+        }
+
+        $em->flush();
+
+        return $records;
     }
 }

@@ -3,7 +3,7 @@
 
     <ul>
         {% for navigationItem in this.getNavigationTree %}
-            <li><a href="#">{{ navigationItem.name }}</a></li>
+            <li><a href="{{ navigationItem.url }}">{{ navigationItem.name }}</a></li>
         {% endfor %}
     </ul>
 </div>
