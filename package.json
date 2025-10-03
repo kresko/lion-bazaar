@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "@hotwired/stimulus": "^3.2.2",
-        "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets"
+        "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets",
+        "bootstrap-icons": "^1.13.1"
     }
 }
