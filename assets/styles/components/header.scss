@@ -1,0 +1,143 @@
+header {
+    button {
+            background: none;
+            border: none;
+            font-size: 32px;
+            color: #333;
+
+            &:hover {
+                color: #007bff;
+            }
+        }
+
+    .top-header {
+        background-color: #f8f9fa;
+        padding: 10px 20px;
+        border-bottom: 1px solid #e0e0e0;
+        display: flex;
+        justify-content: center;
+        position: relative;  
+
+        h1 {
+            margin: 0;
+            font-size: 40px;
+            color: #333;
+        }
+
+        #toggle-button {
+            position: absolute;   
+            right: 20px;          
+            top: 50%;             
+            transform: translateY(-50%);
+        }
+    }
+
+    .bottom-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;   
+        height: 100vh;  
+        background: rgba(52, 58, 64, 0.95); 
+        transform: translateX(-100%); 
+        transition: transform 0.3s ease;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+
+        &.open {
+            transform: translateX(0); 
+        }
+
+        .close-button-container {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px;
+
+            .close-button {
+                background: none;
+                border: none;
+                font-size: 32px;
+                color: #ffffff;
+            }
+        }
+
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+
+            li {
+                margin: 20px 15px;
+
+                a {
+                    color: #ffffff;
+                    text-decoration: none;
+                    font-size: 24px;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+
+    /* Desktop Styles */
+    @media (min-width: 768px) {
+        .top-header {
+            justify-content: flex-start;  
+            position: relative;
+
+            h1 {
+                margin-left: 20px;
+                font-size: 36px;
+            }
+
+            #toggle-button {
+                display: none;   
+            }
+        }
+
+        .bottom-header {
+            transform: none !important;   
+            position: static;             
+            width: auto;
+            height: auto;
+            background: none;
+            box-shadow: none;
+            display: flex !important;
+            flex-direction: row;          
+            align-items: center;
+            justify-content: center;   
+
+            .close-button-container {
+                display: none;   
+            }
+
+            ul {
+                flex-direction: row;
+
+                li {
+                    margin: 15px 15px;
+
+                    a {
+                        font-size: 18px;
+                        color: #333;
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,1 +1,13 @@
-{{ component('Navigation') }}
+<header>
+    <div class="top-header">
+        <h1>Logo</h1>
+        <button id="toggle-button"><i class="bi bi-list"></i></button>
+    </div>
+    <div class="bottom-header">
+        <div class="close-button-container">
+            <button class="close-button"><i class="bi bi-x-circle"></i></button>
+        </div>
+
+        {{ component('Navigation') }}
+    </div>
+</header>

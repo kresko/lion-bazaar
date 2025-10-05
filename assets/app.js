@@ -5,6 +5,9 @@
  * which should already be in your base.html.twig.
  */
 import './styles/app.scss';
+
+import './scripts/components/navigation.js';
+
 import 'bootstrap';
 import bsCustomFileInput from 'bs-custom-file-input';
 
