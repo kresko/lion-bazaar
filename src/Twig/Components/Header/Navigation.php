@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Twig\Components;
+namespace App\Twig\Components\Header;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use App\Repository\NavigationTreeRepository;
