@@ -3,7 +3,6 @@
 namespace App\Controller\Cms;
 
 use App\Entity\CmsBlock;
-use App\Validator\CategoryValidator;
 use App\Validator\CmsBlockValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,7 +33,7 @@ class CmsBlockController extends AbstractController
             'status' => 'Cms block created',
             'created' => $records['created'],
             'updated' => $records['updated'],
-            'errors' => $data[CategoryValidator::ERRORS] ?? []
+            'errors' => $data[CmsBlockValidator::ERRORS] ?? []
         ]);
     }
 
