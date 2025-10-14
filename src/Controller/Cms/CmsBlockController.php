@@ -3,6 +3,7 @@
 namespace App\Controller\Cms;
 
 use App\Entity\CmsBlock;
+use App\Entity\CmsSlot;
 use App\Validator\CmsBlockValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,11 +60,14 @@ class CmsBlockController extends AbstractController
     protected function importCmsBlock(EntityManagerInterface $em, array $data): array
     {
         $cmsBlockRepository = $em->getRepository(CmsBlock::class);
+        $cmsSlotRepository = $em->getRepository(CmsSlot::class);
+
         $created = [];
         $updated = [];
 
         foreach ($data[self::BLOCKS] as $cmsBlockData) {
             $cmsBlock = $cmsBlockRepository->findOneBy(['key' => $cmsBlockData['key']]);
+            $cmsSlot = $cmsSlotRepository->findOneBy(['key' => $cmsBlockData['parent_key']]);
 
             if (!$cmsBlock) {
                 $cmsBlock = new CmsBlock();
@@ -73,12 +77,17 @@ class CmsBlockController extends AbstractController
                 $updated[] = 'CmsBlock: ' . $cmsBlockData['key'];
             }
 
+            if ($cmsSlot) {
+                $cmsBlock->setFkCmsSlot($cmsSlot);
+            }
+
             $cmsBlock
                 ->setKey($cmsBlockData['key'])
                 ->setName($cmsBlockData['name'])
                 ->setUpdatedAt(new \DateTime());
 
             $em->persist($cmsBlock);
+            $em->persist($cmsSlot);
         }
 
         $em->flush();

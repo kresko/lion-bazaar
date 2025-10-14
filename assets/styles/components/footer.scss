@@ -1,0 +1,29 @@
+footer {
+    display: inherit;
+    flex: 0 0 auto;
+    background-color: #f8f9fa;
+    padding: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #6c757d;
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 10px 0;
+
+        li {
+            display: inline;
+            margin: 0 10px;
+
+            a {
+                color: #6c757d;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
