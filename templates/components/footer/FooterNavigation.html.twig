@@ -1,9 +1,10 @@
-<ul>
-    {% for navigationblock in this.getFooterCmsNavigation %}
-        <div class="navigation-footer-block">
+
+{% for navigationblock in this.getFooterCmsNavigation %}
+    <div class="navigation-footer-block">
+        <ul>            
             {% for navigationItem in navigationblock %}
                 <li><a href="{{ navigationItem.url }}">{{ navigationItem.label }}</a></li>
             {% endfor %}
-        </div>
-    {% endfor %}
-</ul>
+        </ul>
+    </div>
+{% endfor %}

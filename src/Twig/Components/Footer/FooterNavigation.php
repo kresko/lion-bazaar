@@ -20,10 +20,10 @@ final class FooterNavigation
                     {\"label\": \"Terms of Service\", \"url\": \"/terms\"}
                 ],
                 [
-                    {\"label\": \"About Us\", \"url\": \"/about\"},
-                    {\"label\": \"Contact\", \"url\": \"/contact\"},
-                    {\"label\": \"Privacy Policy\", \"url\": \"/privacy\"},
-                    {\"label\": \"Terms of Service\", \"url\": \"/terms\"}
+                    {\"label\": \"Location\", \"url\": \"/about\"},
+                    {\"label\": \"Customers\", \"url\": \"/contact\"},
+                    {\"label\": \"Gift Cards\", \"url\": \"/privacy\"},
+                    {\"label\": \"Test Link\", \"url\": \"/terms\"}
                 ]
             ]
         }";
