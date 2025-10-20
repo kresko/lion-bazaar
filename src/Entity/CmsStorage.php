@@ -16,7 +16,7 @@ class CmsStorage
     #[ORM\Column(length: 255)]
     private ?string $key = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: "data", type: "json")]
     private array $data = [];
 
     #[ORM\Column]
@@ -47,7 +47,7 @@ class CmsStorage
         return $this->data;
     }
 
-    public function setData(array $data): static
+    public function setData(array $data): self
     {
         $this->data = $data;
 
