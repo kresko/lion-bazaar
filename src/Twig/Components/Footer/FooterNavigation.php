@@ -2,32 +2,73 @@
 
 namespace App\Twig\Components\Footer;
 
+use App\Repository\CmsStorageRepository;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent]
 final class FooterNavigation
 {
+    /**
+     * @param CmsStorageRepository $cmsStorageRepository
+     */
+    public function __construct(
+        protected CmsStorageRepository $cmsStorageRepository
+    )
+    {
+    }
+
+    /**
+     * @return array
+     */
     public function getFooterCmsNavigation(): array
     {
-        // napravi json
+        $footerNavigationSlot = $this->cmsStorageRepository->findOneBy(['key' => 'footer_navigation_slot']);
 
-        $test = "{
-            \"navigation\": [
-                [
-                    {\"label\": \"About Us\", \"url\": \"/about\"},
-                    {\"label\": \"Contact\", \"url\": \"/contact\"},
-                    {\"label\": \"Privacy Policy\", \"url\": \"/privacy\"},
-                    {\"label\": \"Terms of Service\", \"url\": \"/terms\"}
-                ],
-                [
-                    {\"label\": \"Location\", \"url\": \"/about\"},
-                    {\"label\": \"Customers\", \"url\": \"/contact\"},
-                    {\"label\": \"Gift Cards\", \"url\": \"/privacy\"},
-                    {\"label\": \"Test Link\", \"url\": \"/terms\"}
-                ]
-            ]
-        }";
+        if (!$footerNavigationSlot) {
+            return [];
+        }
 
-        return json_decode($test, true)['navigation'];
+        $slotData = $footerNavigationSlot->getData();
+
+        $navigation = $this->extractNavigationData($slotData);
+
+        return $navigation;
+    }
+
+    /**
+     * @param array $slotData
+     * 
+     * @return array
+     */
+    private function extractNavigationData(array $slotData): array
+    {
+        $navigation = [];
+
+        if (!isset($slotData['children']) || !is_array($slotData['children'])) {
+            return [];
+        }
+
+        foreach ($slotData['children'] as $block) {
+            if ($block['type'] !== 'block' || !isset($block['children'])) {
+                continue;
+            }
+
+            foreach ($block['children'] as $contentItem) {
+                if ($contentItem['type'] !== 'content_item' || !isset($contentItem['data'])) {
+                    continue;
+                }
+
+                $navigationColumn = array_map(function ($item) {
+                    return [
+                        'label' => $item['name'] ?? '',
+                        'url' => $item['url'] ?? '#'
+                    ];
+                }, $contentItem['data']);
+
+                $navigation[] = $navigationColumn;
+            }
+        }
+
+        return $navigation;
     }
 }
