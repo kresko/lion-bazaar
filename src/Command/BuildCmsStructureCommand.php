@@ -107,15 +107,12 @@ class BuildCmsStructureCommand extends Command
 
         if (!$cmsStorage) {
             $cmsStorage = new CmsStorage();
-            $cmsStorage->setKey($slot->getKey());
-            $cmsStorage->setData($tree);
             $cmsStorage->setCreatedAt(new \DateTimeImmutable());
-            $cmsStorage->setUpdatedAt(new \DateTime());
-        } else {
-            $cmsStorage->setKey($slot->getKey());
-            $cmsStorage->setData($tree);
-            $cmsStorage->setUpdatedAt(new \DateTime());
         }
+
+        $cmsStorage->setKey($slot->getKey());
+        $cmsStorage->setData($tree);
+        $cmsStorage->setUpdatedAt(new \DateTime());
 
         $this->em->persist($cmsStorage);
         $this->em->flush();
