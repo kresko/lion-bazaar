@@ -58,6 +58,12 @@ class CategoryController extends AbstractController
         ]);
     }
 
+    /**
+     * @param EntityManagerInterface $em
+     * @param array $data
+     * 
+     * @return array
+     */
     protected function importCategories(EntityManagerInterface $em, array $data): array
     {
         $categoryRepository = $em->getRepository(Category::class);
@@ -94,6 +100,13 @@ class CategoryController extends AbstractController
         ];
     }
 
+    /**
+     * @param EntityManagerInterface $em
+     * @param array $data
+     * @param array $records
+     * 
+     * @return array
+     */
     protected function importUrls(EntityManagerInterface $em, array $data, array $records): array
     {
         $urlRepository = $em->getRepository(Url::class);
@@ -108,19 +121,22 @@ class CategoryController extends AbstractController
 
             $url = $urlRepository->findOneBy(['category' => $category->getId()]);
 
+            $categoryUrl = $this->buildUrlFromCategory($category, $em);
+            
+
             if (!$url) {
                 $url = new Url();
 
                 $url
                     ->setCategory($category)
-                    ->setUrl('/c/' . $categoryData["name"])
+                    ->setUrl('/c' . $categoryUrl)
                     ->setCreatedAtValue(new \DateTimeImmutable());
 
                 $records['created'][] = 'Url: ' . $categoryData['category_key'];
             } else {
                 $url
-                    ->setCategory($category->getId())
-                    ->setUrl('/c/' . $category->getName())
+                    ->setCategory($category)
+                    ->setUrl('/c' . $categoryUrl)
                     ->setUpdatedAtValue(new \DateTime());
 
                 $records['updated'][] = 'Url: ' . $categoryData['category_key'];
@@ -132,5 +148,25 @@ class CategoryController extends AbstractController
         $em->flush();
 
         return $records;
+    }
+
+    /**
+     * @param Category $category
+     * @param EntityManagerInterface $em
+     * 
+     * @return string|null
+     */
+    protected function buildUrlFromCategory(Category $category, EntityManagerInterface $em): ?string
+    {
+        $categoryRepository = $em->getRepository(Category::class);
+        $parentCategory = $categoryRepository->findOneBy(['category_key' => $category->getParentCategoryKey()]);
+
+        if ($parentCategory) {
+            $parentUrl = $this->buildUrlFromCategory($parentCategory, $em);
+
+            return rtrim($parentUrl, '/') . '/' . $category->getName();
+        }
+
+        return null;
     }
 }
