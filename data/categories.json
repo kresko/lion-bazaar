@@ -48,6 +48,13 @@
             "parent_category_key": "2000",
             "name": "computers",
             "is_root": false
+        },
+        {
+            "node_order": 30,
+            "category_key": "2003",
+            "parent_category_key": "2000",
+            "name": "tablets",
+            "is_root": false
         }
     ]
 }
