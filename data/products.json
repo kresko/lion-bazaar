@@ -1,0 +1,11 @@
+{
+    "products": [
+        {
+	        "category_key": "2003",
+            "product_key": "tablet_samsung_galaxy_S24_ultra",
+            "sku": "000001",
+            "name": "Tablet Samsung Galaxy S24 Ultra",
+            "description": "Tablet Samsung Galaxy S24 Ultra test test"
+        }
+    ]
+}

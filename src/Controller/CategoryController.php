@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CategoryController extends AbstractController
@@ -17,6 +18,21 @@ class CategoryController extends AbstractController
      * @var string
      */
     public const CATEGORIES = 'categories';
+
+    #[Route('/c/{category_key}', name: 'category_index', methods: ['GET'])]
+    public function index(Request $request): Response
+    {
+        $categoryKey = $request->attributes->get('category_key');
+
+        // implementiraj logiku koja ce vratiti proizvode koji pripadaju trenutnoj kategoriji
+        // obavezno vanjsku klasu koristi
+        $products = [];
+
+        return $this->render('category/index.html.twig', [
+            'title' => ucfirst(strtolower($categoryKey)),
+            'subtitle' => 'Create and delete categories via API'
+        ]);
+    }
 
     #[Route('/category', name: 'category_create', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em, CategoryValidator $validator): JsonResponse
