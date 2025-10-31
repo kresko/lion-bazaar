@@ -1,0 +1,12 @@
+<article class="product-card" style="border:1px solid #e1e1e1;padding:12px;border-radius:6px;display:flex;flex-direction:column;gap:8px;">
+    <div class="product-card__media" style="background:#f7f7f7;height:120px;display:flex;align-items:center;justify-content:center;border-radius:4px;">
+        <span style="color:#999;font-size:12px;">Image</span>
+    </div>
+    <h3 class="product-card__title" style="margin:0;font-size:16px;">{{ product.getName() }}</h3>
+    <div class="product-card__sku" style="color:#666;font-size:13px;">SKU: {{ product.getSku() }}</div>
+    <p class="product-card__desc" style="flex:1;margin:0;color:#444;font-size:14px;">{{ product.getDescription() }}</p>
+    <div class="product-card__meta" style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <div style="font-weight:600;color:#222;">&euro;99.00</div>
+        <a href="#" class="button" style="background:#333;color:#fff;padding:6px 10px;border-radius:4px;text-decoration:none;font-size:13px;">View</a>
+    </div>
+</article>

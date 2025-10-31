@@ -7,4 +7,16 @@
         <h1 class="home--title">{{ title }}</h1>
         <p class="home--paragraph">{{ subtitle }}</p>
     </div>
+    
+    {# Product listing grid #}
+    <div class="plp">
+        {% if products is defined and products|length > 0 %}
+            <div class="plp__grid">
+                {% for product in products %}
+                    {% include 'category/_product_card.html.twig' with { product: product } %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No products found for this category.</p>
+        {% endif %}
 {% endblock %}

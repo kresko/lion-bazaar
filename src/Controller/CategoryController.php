@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Url;
+use App\Entity\Product;
 use App\Validator\CategoryValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,17 +21,42 @@ class CategoryController extends AbstractController
     public const CATEGORIES = 'categories';
 
     #[Route('/c/{category_key}', name: 'category_index', methods: ['GET'])]
-    public function index(Request $request): Response
+    public function index(Request $request, EntityManagerInterface $em): Response
     {
-        $categoryKey = $request->attributes->get('category_key');
+        $categoryName = $request->attributes->get('category_key');
 
         // implementiraj logiku koja ce vratiti proizvode koji pripadaju trenutnoj kategoriji
         // obavezno vanjsku klasu koristi
-        $products = [];
+        $categoryRepository = $em->getRepository(Category::class);
+        $productRepository = $em->getRepository(Product::class);
+
+        // find category by route name (you use category name in the route)
+        $category = $categoryRepository->findOneBy(['name' => $categoryName]);
+
+        if (!$category) {
+            throw $this->createNotFoundException('Category not found');
+        }
+
+        $rootKey = $category->getCategoryKey();
+
+        // gather descendant category keys (uses repository helper)
+        $descendantKeys = $categoryRepository->findDescendantCategoryKeys($rootKey);
+
+        // include the root category as well
+        $keys = array_merge([$rootKey], $descendantKeys);
+
+        // fetch products that belong to any of those category keys
+        $products = $productRepository->createQueryBuilder('p')
+            ->where('p.category_key IN (:keys)')
+            ->setParameter('keys', $keys)
+            ->getQuery()
+            ->getResult();
 
         return $this->render('category/index.html.twig', [
-            'title' => ucfirst(strtolower($categoryKey)),
-            'subtitle' => 'Create and delete categories via API'
+            'title' => ucfirst(strtolower($category->getName())),
+            'subtitle' => 'Products for "' . $category->getName() . '" and its subcategories',
+            'products' => $products,
+            'category' => $category,
         ]);
     }
 

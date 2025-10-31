@@ -18,6 +18,10 @@ class Url
     #[ORM\JoinColumn(name: "fk_category", referencedColumnName: "id", nullable: true)]
     private ?Category $category = null;
 
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    #[ORM\JoinColumn(name: "fk_product", referencedColumnName: "id", nullable: true)]
+    private ?Product $product = null;
+
     #[ORM\Column(type: "string", length: 255)]
     private string $url;
 
@@ -40,6 +44,19 @@ class Url
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+        
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
+
         return $this;
     }
 
