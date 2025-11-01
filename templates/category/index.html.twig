@@ -8,7 +8,6 @@
         <p class="home--paragraph">{{ subtitle }}</p>
     </div>
     
-    {# Product listing grid #}
     <div class="plp">
         {% if products is defined and products|length > 0 %}
             <div class="plp__grid">
@@ -19,4 +18,5 @@
         {% else %}
             <p>No products found for this category.</p>
         {% endif %}
+    </div>
 {% endblock %}
