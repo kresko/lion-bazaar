@@ -1,6 +1,8 @@
 // mapiraj ga u app.scss-u
 .plp {
-    .plp-grid {
+    padding: 10px;
+
+    .plp__grid {
         display:grid;
         grid-template-columns: repeat(3,1fr);
         gap: 16px;
