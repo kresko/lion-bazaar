@@ -16,7 +16,7 @@ jobs:
         with:
           php-version: '8.2'
           coverage: none
-      - run: composer install --no-progress --no-suggest
+      - run: composer install --no-progress
       - run: vendor/bin/phpstan analyse --error-format=github
 
   codesniffer:
@@ -28,5 +28,5 @@ jobs:
         with:
           php-version: '8.2'
           coverage: none
-      - run: composer install --no-progress --no-suggest
+      - run: composer install --no-progress
       - run: vendor/bin/phpcs --report=checkstyle
