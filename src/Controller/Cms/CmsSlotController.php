@@ -3,7 +3,7 @@
 namespace App\Controller\Cms;
 
 use App\Entity\CmsSlot;
-use App\Validator\CmsSlotValidator;
+use App\Service\Validator\Cms\CmsSlotValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
