@@ -16,8 +16,8 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
-    /** 
-     * @return array<int, mixed> 
+    /**
+     * @return array<int, mixed>
      */
     public function findDescendantCategoryKeys(string $rootKey): array
     {

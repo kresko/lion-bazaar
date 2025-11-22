@@ -30,8 +30,8 @@ class CategoryTree
         return $this->id;
     }
 
-    /** 
-     * @return array<int, mixed> 
+    /**
+     * @return array<int, mixed>
      */
     public function getTreeJson(): array
     {
@@ -40,7 +40,7 @@ class CategoryTree
 
     /**
      * @param array<int, mixed> $treeJson
-     * 
+     *
      * @return self
      */
     public function setTreeJson(array $treeJson): self
