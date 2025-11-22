@@ -27,9 +27,9 @@ class CategoryValidator
     /**
      * Validates and sanitizes category data.
      *
-     * @param array $data
+     * @param array<string, mixed> $data
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function validate(array $data): array
     {

@@ -7,17 +7,17 @@ use App\Entity\Category;
 interface CategoryImporterInterface
 {
     /**
-     * @param array $data
+     * @param array<string, mixed> $data
      *
-     * @return array
+     * @return array<string, list<string>>
      */
     public function importCategories(array $data): array;
 
     /**
-     * @param array $data
-     * @param array $records
+     * @param array<string, mixed> $data
+     * @param array<string, mixed> $records
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function importUrls(array $data, array $records): array;
 

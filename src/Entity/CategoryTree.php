@@ -14,6 +14,7 @@ class CategoryTree
     #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
+    /** @var array<int, mixed> */
     #[ORM\Column(name: "tree_json", type: "json")]
     private array $treeJson = [];
 
@@ -29,14 +30,23 @@ class CategoryTree
         return $this->id;
     }
 
+    /** 
+     * @return array<int, mixed> 
+     */
     public function getTreeJson(): array
     {
         return $this->treeJson;
     }
 
+    /**
+     * @param array<int, mixed> $treeJson
+     * 
+     * @return self
+     */
     public function setTreeJson(array $treeJson): self
     {
         $this->treeJson = $treeJson;
+
         return $this;
     }
 

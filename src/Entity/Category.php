@@ -14,26 +14,26 @@ class Category
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $node_order = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $category_key = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $parent_category_key = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
     #[ORM\Column]
-    private ?bool $is_root = null;
+    private bool $is_root;
 
     #[ORM\Column(type: "datetime_immutable")]
-    private ?\DateTimeImmutable $createdAt = null;
+    private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: "datetime")]
-    private ?\DateTime $updatedAt = null;
+    private \DateTime $updatedAt;
 
 
     public function getId(): ?int
@@ -89,7 +89,7 @@ class Category
         return $this;
     }
 
-    public function isRoot(): ?bool
+    public function isRoot(): bool
     {
         return $this->is_root;
     }
