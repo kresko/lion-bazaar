@@ -9,13 +9,12 @@ class CategoryUrlBuilder implements CategoryUrlBuilderInterface
 {
     public function __construct(
         private EntityManagerInterface $em
-    )
-    {
+    ) {
     }
 
     /**
      * @param Category $category
-     * 
+     *
      * @return string|null
      */
     public function buildUrlFromCategory(Category $category): ?string

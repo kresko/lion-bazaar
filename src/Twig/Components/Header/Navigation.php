@@ -23,7 +23,7 @@ final class Navigation
     public function getNavigationTree(): ?array
     {
         $navigationTree = $this->navigationTreeRepository->getTreeJson();
-        
+
         return $navigationTree[0][static::CHILDREN];
     }
 }

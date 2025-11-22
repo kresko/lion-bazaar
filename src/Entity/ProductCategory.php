@@ -37,9 +37,9 @@ class ProductCategory
 
     public function setFkProduct(Product $fk_product): static
     {
-        
+
         $this->fk_product = $fk_product;
-        
+
         return $this;
     }
 

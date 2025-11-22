@@ -44,7 +44,7 @@ class Url
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
-        
+
         return $this;
     }
 

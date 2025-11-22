@@ -26,7 +26,7 @@ class CmsSlotController extends AbstractController
         }
 
             $data = $validator->validate($data);
-    
+
             $records = $this->importCmsSlot($em, $data);
 
         return $this->json([

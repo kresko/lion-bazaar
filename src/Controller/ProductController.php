@@ -18,7 +18,7 @@ class ProductController extends AbstractController
     public const PRODUCTS = 'products';
 
     #[Route('/product', name: 'product_create', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em): JsonResponse 
+    public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -55,7 +55,7 @@ class ProductController extends AbstractController
                 $created[] = 'Product: ' . $productData['sku'];
             } else {
                 $updated[] = 'Product: ' . $productData['sku'];
-            }   
+            }
 
             $product->setCategoryKey($productData['category_key']);
             $product->setProductKey($productData['product_key']);
@@ -125,7 +125,7 @@ class ProductController extends AbstractController
             $url = $urlRepository->findOneBy(['product' => $product->getId()]);
 
             $productUrl = $this->buildUrlFromProductKey($product, $em);
-            
+
 
             if (!$url) {
                 $url = new Url();

@@ -24,18 +24,20 @@ class CategoryTree
     private ?\DateTime $updatedAt = null;
 
 
-    public function getId(): ?int 
-    { 
-        return $this->id; 
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
-    public function getTreeJson(): array 
-    { 
-        return $this->treeJson; 
+    public function getTreeJson(): array
+    {
+        return $this->treeJson;
     }
 
-    public function setTreeJson(array $treeJson): self { 
-        $this->treeJson = $treeJson; return $this; 
+    public function setTreeJson(array $treeJson): self
+    {
+        $this->treeJson = $treeJson;
+        return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable

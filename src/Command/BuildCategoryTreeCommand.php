@@ -73,7 +73,7 @@ class BuildCategoryTreeCommand extends Command
             $categoryTree = new CategoryTree();
             $categoryTree->setCreatedAtValue(new \DateTimeImmutable());
         }
-        
+
         $categoryTree->setTreeJson($tree);
         $categoryTree->setUpdatedAtValue(new \DateTime());
 

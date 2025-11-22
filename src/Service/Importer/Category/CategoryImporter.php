@@ -17,13 +17,12 @@ class CategoryImporter implements CategoryImporterInterface
     public function __construct(
         private EntityManagerInterface $em,
         private CategoryUrlBuilderInterface $categoryUrlBuilder
-    )
-    {
+    ) {
     }
 
     /**
      * @param array $data
-     * 
+     *
      * @return array
      */
     public function importCategories(array $data): array
@@ -65,7 +64,7 @@ class CategoryImporter implements CategoryImporterInterface
     /**
      * @param array $data
      * @param array $records
-     * 
+     *
      * @return array
      */
     public function importUrls(array $data, array $records): array
@@ -83,7 +82,7 @@ class CategoryImporter implements CategoryImporterInterface
             $url = $urlRepository->findOneBy(['category' => $category->getId()]);
 
             $categoryUrl = $this->categoryUrlBuilder->buildUrlFromCategory($category, $this->em);
-            
+
 
             if (!$url) {
                 $url = new Url();
@@ -113,7 +112,7 @@ class CategoryImporter implements CategoryImporterInterface
 
     /**
      * @param Category $category
-     * 
+     *
      * @return void
      */
     public function removeCategory(Category $category): void
