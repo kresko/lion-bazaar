@@ -24,7 +24,7 @@ class CategoryUrlBuilder implements CategoryUrlBuilderInterface
         $parentCategory = $categoryRepository->findOneBy(['category_key' => $category->getParentCategoryKey()]);
 
         if ($parentCategory) {
-            $parentUrl = $this->buildUrlFromCategory($parentCategory);
+            $parentUrl = $this->buildUrlFromCategory($parentCategory) ?? '';
 
             return rtrim($parentUrl, '/') . '/' . $category->getName();
         }
