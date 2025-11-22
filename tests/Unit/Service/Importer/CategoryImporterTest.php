@@ -128,9 +128,31 @@ class CategoryImporterTest extends TestCase
     {
         $category = new Category();
 
-        $this->em->expects($this->once())->method('remove')->with($category);
+        // simulate that there's a Url linked to this category in DB
+        $url = new Url();
+
+        $urlRepo = $this->createMock(EntityRepository::class);
+        $urlRepo->method('findOneBy')->willReturn($url);
+
+        $this->em->method('getRepository')->willReturnCallback(function ($class) use ($urlRepo) {
+            return $urlRepo;
+        });
+
+        // Capture removed entities to assert later (expect 2 removals)
+        $removed = [];
+        $this->em->expects($this->exactly(2))
+            ->method('remove')
+            ->willReturnCallback(function ($entity) use (&$removed) {
+                $removed[] = $entity;
+            });
+
         $this->em->expects($this->once())->method('flush');
 
         $this->importer->removeCategory($category);
+
+        // verify that a Url was removed first, then the Category
+        $this->assertCount(2, $removed);
+        $this->assertInstanceOf(Url::class, $removed[0]);
+        $this->assertInstanceOf(Category::class, $removed[1]);
     }
 }

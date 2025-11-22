@@ -118,6 +118,10 @@ class CategoryImporter implements CategoryImporterInterface
      */
     public function removeCategory(Category $category): void
     {
+        $urlRepository = $this->em->getRepository(Url::class);
+        $url = $urlRepository->findOneBy(['category' => $category->getId()]);
+
+        $this->em->remove($url);
         $this->em->remove($category);
         $this->em->flush();
     }
