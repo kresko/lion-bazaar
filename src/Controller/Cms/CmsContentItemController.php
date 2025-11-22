@@ -4,7 +4,7 @@ namespace App\Controller\Cms;
 
 use App\Entity\CmsBlock;
 use App\Entity\CmsContentItem;
-use App\Validator\CmsContentItemValidator;
+use App\Service\Validator\Cms\CmsContentItemValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
