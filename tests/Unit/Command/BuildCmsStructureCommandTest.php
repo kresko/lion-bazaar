@@ -30,7 +30,7 @@ class BuildCmsStructureCommandTest extends TestCase
     /**
      * @param object $entity
      * @param int $id
-     * 
+     *
      * @return void
      */
     private function setEntityId($entity, $id): void
@@ -45,7 +45,7 @@ class BuildCmsStructureCommandTest extends TestCase
      * @param object $entity
      * @param string $propertyName
      * @param mixed $value
-     * 
+     *
      * @return void
      */
     private function setEntityProperty($entity, $propertyName, $value): void

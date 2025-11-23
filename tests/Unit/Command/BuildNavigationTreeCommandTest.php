@@ -29,7 +29,7 @@ class BuildNavigationTreeCommandTest extends TestCase
     /**
      * @param Category $entity
      * @param int $id
-     * 
+     *
      * @return void
      */
     private function setEntityId($entity, $id): void
