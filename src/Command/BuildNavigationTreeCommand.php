@@ -39,7 +39,7 @@ class BuildNavigationTreeCommand extends Command
         foreach ($categories as $category) {
             $url = $urlRepository->findOneBy(['category' => $category]);
 
-            if ($category->getParentCategoryKey() === static::ROOT_CATEGORY || $category->isRoot()) {
+            if ($category->getParentCategoryKey() === self::ROOT_CATEGORY || $category->isRoot()) {
                 $categoriesByKey[$category->getCategoryKey()] = [
                     'id_category' => $category->getId(),
                     'node_order' => $category->getNodeOrder(),
@@ -56,7 +56,7 @@ class BuildNavigationTreeCommand extends Command
         // Attach children to parents
         $tree = [];
         foreach ($categoriesByKey as $key => &$category) {
-            if ($category['parent_category_key'] === static::ROOT_CATEGORY && isset($categoriesByKey[$category['parent_category_key']])) {
+            if ($category['parent_category_key'] === self::ROOT_CATEGORY && isset($categoriesByKey[$category['parent_category_key']])) {
                 $categoriesByKey[$category['parent_category_key']]['children'][] = &$category;
             } elseif ($category['is_root']) {
                 $tree[] = &$category;
@@ -66,11 +66,11 @@ class BuildNavigationTreeCommand extends Command
         $navigationTree = $this->em->getRepository(NavigationTree::class)->findOneBy([]);
         if (!$navigationTree) {
             $navigationTree = new NavigationTree();
-            $navigationTree->setCreatedAtValue(new \DateTimeImmutable());
+            $navigationTree->setCreatedAtValue();
         }
 
         $navigationTree->setTreeJson($tree);
-        $navigationTree->setUpdatedAtValue(new \DateTime());
+        $navigationTree->setUpdatedAtValue();
 
         $this->em->persist($navigationTree);
         $this->em->flush();

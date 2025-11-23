@@ -71,11 +71,11 @@ class BuildCategoryTreeCommand extends Command
         $categoryTree = $this->em->getRepository(CategoryTree::class)->findOneBy([]);
         if (!$categoryTree) {
             $categoryTree = new CategoryTree();
-            $categoryTree->setCreatedAtValue(new \DateTimeImmutable());
+            $categoryTree->setCreatedAtValue();
         }
 
         $categoryTree->setTreeJson($tree);
-        $categoryTree->setUpdatedAtValue(new \DateTime());
+        $categoryTree->setUpdatedAtValue();
 
         $this->em->persist($categoryTree);
         $this->em->flush();

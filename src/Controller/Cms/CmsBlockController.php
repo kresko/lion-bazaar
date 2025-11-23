@@ -4,6 +4,7 @@ namespace App\Controller\Cms;
 
 use App\Entity\CmsBlock;
 use App\Entity\CmsSlot;
+use App\Service\Importer\Cms\CmsBlockImporterInterface;
 use App\Service\Validator\Cms\CmsBlockValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +20,7 @@ class CmsBlockController extends AbstractController
     public const BLOCKS = 'blocks';
 
     #[Route('/cms/block', name: 'cms_block_create', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em, CmsBlockValidator $validator): JsonResponse
+    public function create(Request $request, CmsBlockValidator $validator, CmsBlockImporterInterface $cmsBlockImporter): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         if (!$data) {
@@ -28,7 +29,7 @@ class CmsBlockController extends AbstractController
 
         $data = $validator->validate($data);
 
-        $records = $this->importCmsBlock($em, $data);
+        $records = $cmsBlockImporter->importCmsBlock($data);
 
         return $this->json([
             'status' => 'Cms block created',
@@ -55,46 +56,5 @@ class CmsBlockController extends AbstractController
             'status' => 'Cms block deleted',
             'key' => $key,
         ]);
-    }
-
-    protected function importCmsBlock(EntityManagerInterface $em, array $data): array
-    {
-        $cmsBlockRepository = $em->getRepository(CmsBlock::class);
-        $cmsSlotRepository = $em->getRepository(CmsSlot::class);
-
-        $created = [];
-        $updated = [];
-
-        foreach ($data[self::BLOCKS] as $cmsBlockData) {
-            $cmsBlock = $cmsBlockRepository->findOneBy(['key' => $cmsBlockData['key']]);
-            $cmsSlot = $cmsSlotRepository->findOneBy(['key' => $cmsBlockData['parent_key']]);
-
-            if (!$cmsBlock) {
-                $cmsBlock = new CmsBlock();
-                $cmsBlock->setCreatedAt(new \DateTimeImmutable());
-                $created[] = 'CmsBlock: ' . $cmsBlockData['key'];
-            } else {
-                $updated[] = 'CmsBlock: ' . $cmsBlockData['key'];
-            }
-
-            if ($cmsSlot) {
-                $cmsBlock->setFkCmsSlot($cmsSlot);
-            }
-
-            $cmsBlock
-                ->setKey($cmsBlockData['key'])
-                ->setName($cmsBlockData['name'])
-                ->setUpdatedAt(new \DateTime());
-
-            $em->persist($cmsBlock);
-            $em->persist($cmsSlot);
-        }
-
-        $em->flush();
-
-        return [
-            'created' => $created,
-            'updated' => $updated,
-        ];
     }
 }
