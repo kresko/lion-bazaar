@@ -22,7 +22,7 @@ class NavigationTreeRepository extends ServiceEntityRepository
         }
 
         $json = $navigationTree->getTreeJson();
-        
+
         return is_string($json) ? json_decode($json, true) : $json;
     }
 }

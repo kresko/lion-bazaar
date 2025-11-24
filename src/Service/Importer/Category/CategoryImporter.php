@@ -17,14 +17,13 @@ class CategoryImporter implements CategoryImporterInterface
     public function __construct(
         private EntityManagerInterface $em,
         private CategoryUrlBuilderInterface $categoryUrlBuilder
-    )
-    {
+    ) {
     }
 
     /**
-     * @param array $data
-     * 
-     * @return array
+     * @param array<string, mixed> $data
+     *
+     * @return array<string, list<string>>
      */
     public function importCategories(array $data): array
     {
@@ -37,7 +36,7 @@ class CategoryImporter implements CategoryImporterInterface
 
             if (!$category) {
                 $category = new Category();
-                $category->setCreatedAtValue(new \DateTimeImmutable());
+                $category->setCreatedAtValue();
                 $created[] = 'Category: ' . $categoryData['category_key'];
             } else {
                 $updated[] = 'Category: ' . $categoryData['category_key'];
@@ -49,7 +48,7 @@ class CategoryImporter implements CategoryImporterInterface
                 ->setParentCategoryKey($categoryData['parent_category_key'])
                 ->setName($categoryData['name'])
                 ->setIsRoot((bool)($categoryData['is_root']))
-                ->setUpdatedAtValue(new \DateTime());
+                ->setUpdatedAtValue();
 
             $this->em->persist($category);
         }
@@ -63,10 +62,10 @@ class CategoryImporter implements CategoryImporterInterface
     }
 
     /**
-     * @param array $data
-     * @param array $records
-     * 
-     * @return array
+     * @param array<string, mixed> $data
+     * @param array<string, mixed> $records
+     *
+     * @return array<string, mixed>
      */
     public function importUrls(array $data, array $records): array
     {
@@ -82,8 +81,8 @@ class CategoryImporter implements CategoryImporterInterface
 
             $url = $urlRepository->findOneBy(['category' => $category->getId()]);
 
-            $categoryUrl = $this->categoryUrlBuilder->buildUrlFromCategory($category, $this->em);
-            
+            $categoryUrl = $this->categoryUrlBuilder->buildUrlFromCategory($category);
+
 
             if (!$url) {
                 $url = new Url();
@@ -91,14 +90,14 @@ class CategoryImporter implements CategoryImporterInterface
                 $url
                     ->setCategory($category)
                     ->setUrl('/c' . $categoryUrl)
-                    ->setCreatedAtValue(new \DateTimeImmutable());
+                    ->setCreatedAtValue();
 
                 $records['created'][] = 'Url: ' . $categoryData['category_key'];
             } else {
                 $url
                     ->setCategory($category)
                     ->setUrl('/c' . $categoryUrl)
-                    ->setUpdatedAtValue(new \DateTime());
+                    ->setUpdatedAtValue();
 
                 $records['updated'][] = 'Url: ' . $categoryData['category_key'];
             }
@@ -113,11 +112,15 @@ class CategoryImporter implements CategoryImporterInterface
 
     /**
      * @param Category $category
-     * 
+     *
      * @return void
      */
     public function removeCategory(Category $category): void
     {
+        $urlRepository = $this->em->getRepository(Url::class);
+        $url = $urlRepository->findOneBy(['category' => $category->getId()]);
+
+        $this->em->remove($url);
         $this->em->remove($category);
         $this->em->flush();
     }

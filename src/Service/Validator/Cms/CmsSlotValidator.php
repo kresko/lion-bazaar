@@ -33,7 +33,7 @@ class CmsSlotValidator
      * Validates and sanitizes cms slot data.
      *
      * @param array $data
-     * 
+     *
      * @return array
      */
     public function validate(array $data): array

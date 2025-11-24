@@ -24,8 +24,7 @@ class BuildCmsStructureCommand extends Command
      */
     public function __construct(
         protected EntityManagerInterface $em
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -40,7 +39,7 @@ class BuildCmsStructureCommand extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * 
+     *
      * @return integer
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -50,7 +49,7 @@ class BuildCmsStructureCommand extends Command
         $cmsSlotRepostory = $this->em->getRepository(CmsSlot::class);
         $cmsBlockRepository = $this->em->getRepository(CmsBlock::class);
         $cmsContentItemRepository = $this->em->getRepository(CmsContentItem::class);
-        $cmsStorageRepository = $this->em->getRepository(CmsStorage::class);        
+        $cmsStorageRepository = $this->em->getRepository(CmsStorage::class);
 
         $slot = $cmsSlotRepostory->findOneBy(['key' => $slotArgument]);
 
@@ -66,7 +65,7 @@ class BuildCmsStructureCommand extends Command
             'type' => 'slot',
             'children' => [],
         ];
-        
+
         $blocks = $cmsBlockRepository->findAll($slot->getId());
 
         foreach ($blocks as $block) {
@@ -116,14 +115,14 @@ class BuildCmsStructureCommand extends Command
 
         $this->em->persist($cmsStorage);
         $this->em->flush();
-        
+
         $output->writeln('CMS structure built successfully.');
         return Command::SUCCESS;
     }
 
     /**
      * @param object $entity
-     * 
+     *
      * @return string|null
      */
     private function tryGetLabel(object $entity): ?string
@@ -139,7 +138,7 @@ class BuildCmsStructureCommand extends Command
 
     /**
      * @param object $entity
-     * 
+     *
      * @return mixed|null
      */
     private function tryGetData(object $entity): mixed

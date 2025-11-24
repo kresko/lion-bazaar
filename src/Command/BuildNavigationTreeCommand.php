@@ -68,7 +68,7 @@ class BuildNavigationTreeCommand extends Command
             $navigationTree = new NavigationTree();
             $navigationTree->setCreatedAtValue(new \DateTimeImmutable());
         }
-        
+
         $navigationTree->setTreeJson($tree);
         $navigationTree->setUpdatedAtValue(new \DateTime());
 

@@ -30,3 +30,17 @@ jobs:
           coverage: none
       - run: composer install --no-progress
       - run: vendor/bin/phpcs --report=checkstyle
+
+  phpunit:
+    name: PHPUnit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - run: composer install --no-progress
+      - run: ./bin/phpunit tests/Unit/Controller/CategoryControllerTest.php
+      - run: ./bin/phpunit tests/Unit/Service/Builder/CategoryUrlBuilderTest.php
+      - run: ./bin/phpunit tests/Unit/Service/Importer/CategoryImporterTest.php
