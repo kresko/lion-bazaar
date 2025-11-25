@@ -18,6 +18,11 @@ class CmsBlockImporter implements CmsBlockImporterInterface
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * 
+     * @return array<string, mixed>
+     */
     public function importCmsBlock(array $data): array
     {
         $cmsBlockRepository = $this->em->getRepository(CmsBlock::class);
