@@ -15,7 +15,7 @@ parameters:
         containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
     
     # Ignore some common Symfony patterns
-    ignoreErrors:
-        - '#Method .* should return .* but returns void\.#'
-        - '#Call to method .* on an unknown class#'
-        - '#Access to an undefined property#'
+    # ignoreErrors:
+    #     - '#Method .* should return .* but returns void\.#'
+    #     - '#Call to method .* on an unknown class#'
+    #     - '#Access to an undefined property#'

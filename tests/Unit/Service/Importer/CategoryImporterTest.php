@@ -92,8 +92,8 @@ class CategoryImporterTest extends TestCase
             $cat->setName(ucfirst($criteria['category_key']));
             $cat->setNodeOrder(1);
             $cat->setIsRoot($criteria['category_key'] === 'electronics');
-            $cat->setCreatedAtValue(new \DateTimeImmutable());
-            $cat->setUpdatedAtValue(new \DateTime());
+            $cat->setCreatedAtValue();
+            $cat->setUpdatedAtValue();
             return $cat;
         });
 

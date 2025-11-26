@@ -66,13 +66,9 @@ class BuildCmsStructureCommand extends Command
             'children' => [],
         ];
 
-        $blocks = $cmsBlockRepository->findAll($slot->getId());
+        $blocks = $cmsBlockRepository->findAll();
 
         foreach ($blocks as $block) {
-            if (!$block) {
-                continue;
-            }
-
             $blockNode = [
                 'id' => $block->getId(),
                 'type' => 'block',
@@ -80,13 +76,9 @@ class BuildCmsStructureCommand extends Command
                 'children' => [],
             ];
 
-            $contentItems = $cmsContentItemRepository->findAll($block->getId());
+            $contentItems = $cmsContentItemRepository->findAll();
 
             foreach ($contentItems as $contentItem) {
-                if (!$contentItem) {
-                    continue;
-                }
-
                 $contentNode = [
                     'id' => $contentItem->getId(),
                     'type' => 'content_item',

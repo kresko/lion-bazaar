@@ -81,7 +81,6 @@ class CategoryController extends AbstractController
             return $this->json(['error' => 'Category not found'], 404);
         }
 
-        //make test category and delete it!
         $categoryImporter->removeCategory($category);
 
         return $this->json([
