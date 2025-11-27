@@ -24,6 +24,6 @@ final class Navigation
     {
         $navigationTree = $this->navigationTreeRepository->getTreeJson();
         
-        return $navigationTree[0][static::CHILDREN];
+        return $navigationTree[0][static::CHILDREN] ?? null;
     }
 }
