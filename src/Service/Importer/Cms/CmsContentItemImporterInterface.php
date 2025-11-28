@@ -2,12 +2,12 @@
 
 namespace App\Service\Importer\Cms;
 
-interface CmsBlockImporterInterface
+interface CmsContentItemImporterInterface
 {
     /**
      * @param array<string, mixed> $data
      *
      * @return array<string, mixed>
      */
-    public function importCmsBlock(array $data): array;
+    public function importCmsContentItem(array $data): array;
 }
