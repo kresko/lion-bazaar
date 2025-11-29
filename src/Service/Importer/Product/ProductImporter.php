@@ -1,49 +1,29 @@
 <?php
 
-namespace App\Controller;
+namespace App\Service\Importer\Product;
 
 use App\Entity\Product;
 use App\Entity\Category;
 use App\Entity\ProductCategory;
 use App\Entity\Url;
-use App\Service\Validator\Category\ProductValidator;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use DateTimeImmutable;
+use App\Service\Builder\Url\ProductUrlBuilderInterface;
 
-class ProductController extends AbstractController
+class ProductImporter implements ProductImporterInterface
 {
     public const PRODUCTS = 'products';
 
-    #[Route('/product', name: 'product_create', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em, ProductValidator $productValidator): JsonResponse
+    public function __construct(
+        private EntityManagerInterface $em,
+        private ProductUrlBuilderInterface $productUrlBuilder
+    )
     {
-        $data = json_decode($request->getContent(), true);
-
-        if (!$data) {
-            return $this->json(['error' => 'Invalid JSON'], 400);
-        }
-
-        $productValidator->validate($data);
-
-        //zameni i dobro s testiraj!!!!!
-        $records = $this->importProducts($em, $data);
-        $this->importProductCategoryMapping($em, $data);
-        $this->importProductUrls($em, $data);
-
-        return $this->json([
-            'status' => 'Product created',
-            'created' => $records['created'],
-            'updated' => $records['updated'],
-        ]);
     }
 
-    protected function importProducts(EntityManagerInterface $em, array $data): array
+    public function importProducts(array $data): array
     {
-        $productRepository = $em->getRepository(Product::class);
+        $productRepository = $this->em->getRepository(Product::class);
         $created = [];
         $updated = [];
 
@@ -65,10 +45,10 @@ class ProductController extends AbstractController
             $product->setDescription($productData['description']);
             $product->setUpdatedAt(new \DateTime());
 
-            $em->persist($product);
+            $this->em->persist($product);
         }
 
-        $em->flush();
+        $this->em->flush();
 
         return [
             'created' => $created,
@@ -76,11 +56,12 @@ class ProductController extends AbstractController
         ];
     }
 
-    protected function importProductCategoryMapping(EntityManagerInterface $em, array $data)
+     
+    public function importProductCategoryMapping(array $data): void
     {
-        $categoryRepository = $em->getRepository(Category::class);
-        $productRepository = $em->getRepository(Product::class);
-        $productCategoryRepository = $em->getRepository(ProductCategory::class);
+        $categoryRepository = $this->em->getRepository(Category::class);
+        $productRepository = $this->em->getRepository(Product::class);
+        $productCategoryRepository = $this->em->getRepository(ProductCategory::class);
 
         foreach ($data[self::PRODUCTS] as $productData) {
             $product = $productRepository->findOneBy(['sku' => $productData['sku']]);
@@ -104,17 +85,16 @@ class ProductController extends AbstractController
             $productCategory->setFkCategory($category);
             $productCategory->setUpdatedAt(new \DateTime());
 
-            $em->persist($productCategory);
+            $this->em->persist($productCategory);
         }
 
-        $em->flush();
+        $this->em->flush();
     }
 
-    protected function importProductUrls(EntityManagerInterface $em, array $data)
+     public function importProductUrls(array $data): array
     {
-        // Implementation for importing product URLs
-        $urlRepository = $em->getRepository(Url::class);
-        $productRepository = $em->getRepository(Product::class);
+        $urlRepository = $this->em->getRepository(Url::class);
+        $productRepository = $this->em->getRepository(Product::class);
 
         foreach ($data[self::PRODUCTS] as $productData) {
             $product = $productRepository->findOneBy(['product_key' => $productData['product_key']]);
@@ -125,7 +105,7 @@ class ProductController extends AbstractController
 
             $url = $urlRepository->findOneBy(['product' => $product->getId()]);
 
-            $productUrl = $this->buildUrlFromProductKey($product, $em);
+            $productUrl = $this->productUrlBuilder->buildUrlFromProductKey($product);
 
 
             if (!$url) {
@@ -145,16 +125,11 @@ class ProductController extends AbstractController
                 ->setUrl('/p' . $productUrl)
                 ->setUpdatedAtValue(new \DateTime());
 
-            $em->persist($url);
+            $this->em->persist($url);
         }
 
-        $em->flush();
+        $this->em->flush();
 
         return $records;
-    }
-
-    protected function buildUrlFromProductKey(Product $product, EntityManagerInterface $em): string
-    {
-        return '/' . str_replace('_', '-', $product->getProductKey());
     }
 }

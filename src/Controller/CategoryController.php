@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Category;
-use App\Entity\Url;
 use App\Entity\Product;
 use App\Service\Importer\Category\CategoryImporterInterface;
 use App\Service\Validator\Category\CategoryValidator;
@@ -29,7 +28,6 @@ class CategoryController extends AbstractController
         $categoryRepository = $em->getRepository(Category::class);
         $productRepository = $em->getRepository(Product::class);
 
-        // find category by route name (you use category name in the route)
         $category = $categoryRepository->findOneBy(['name' => $categoryName]);
 
         if (!$category) {
@@ -51,7 +49,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/category', name: 'category_create', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em, CategoryValidator $validator, CategoryImporterInterface $categoryImporter): JsonResponse
+    public function create(Request $request, CategoryValidator $validator, CategoryImporterInterface $categoryImporter): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         if (!$data) {
