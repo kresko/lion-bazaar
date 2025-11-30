@@ -13,8 +13,7 @@ final class FooterNavigation
      */
     public function __construct(
         protected CmsStorageRepository $cmsStorageRepository
-    )
-    {
+    ) {
     }
 
     /**
@@ -37,7 +36,7 @@ final class FooterNavigation
 
     /**
      * @param array $slotData
-     * 
+     *
      * @return array
      */
     private function extractNavigationData(array $slotData): array

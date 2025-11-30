@@ -3,7 +3,8 @@
 namespace App\Controller\Cms;
 
 use App\Entity\CmsSlot;
-use App\Validator\CmsSlotValidator;
+use App\Service\Importer\Cms\CmsSlotImporterInterface;
+use App\Service\Validator\Cms\CmsSlotValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,7 +19,7 @@ class CmsSlotController extends AbstractController
     public const SLOTS = 'slots';
 
     #[Route('/cms/slot', name: 'cms_slot_create', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em, CmsSlotValidator $validator): JsonResponse
+    public function create(Request $request, EntityManagerInterface $em, CmsSlotValidator $validator, CmsSlotImporterInterface $cmsSlotImporter): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         if (!$data) {
@@ -26,11 +27,11 @@ class CmsSlotController extends AbstractController
         }
 
             $data = $validator->validate($data);
-    
-            $records = $this->importCmsSlot($em, $data);
+
+            $records = $cmsSlotImporter->importCmsSlot($data);
 
         return $this->json([
-            'status' => 'Category created',
+            'status' => 'Cms slot created',
             'created' => $records['created'],
             'updated' => $records['updated'],
             'errors' => $data[CmsSlotValidator::ERRORS] ?? []
@@ -55,38 +56,5 @@ class CmsSlotController extends AbstractController
             'status' => 'Cms slot deleted',
             'key' => $key,
         ]);
-    }
-
-    protected function importCmsSlot(EntityManagerInterface $em, array $data): array
-    {
-        $cmsSlotRepository = $em->getRepository(CmsSlot::class);
-        $created = [];
-        $updated = [];
-
-        foreach ($data[self::SLOTS] as $cmsSlotData) {
-            $cmsSlot = $cmsSlotRepository->findOneBy(['key' => $cmsSlotData['key']]);
-
-            if (!$cmsSlot) {
-                $cmsSlot = new CmsSlot();
-                $cmsSlot->setCreatedAt(new \DateTimeImmutable());
-                $created[] = 'CmsSlot: ' . $cmsSlotData['key'];
-            } else {
-                $updated[] = 'CmsSlot: ' . $cmsSlotData['key'];
-            }
-
-            $cmsSlot
-                ->setKey($cmsSlotData['key'])
-                ->setName($cmsSlotData['name'])
-                ->setUpdatedAt(new \DateTime());
-
-            $em->persist($cmsSlot);
-        }
-
-        $em->flush();
-
-        return [
-            'created' => $created,
-            'updated' => $updated,
-        ];
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Controller\Cms;
 
-use App\Entity\CmsBlock;
 use App\Entity\CmsContentItem;
-use App\Validator\CmsContentItemValidator;
+use App\Service\Importer\Cms\CmsContentItemImporterInterface;
+use App\Service\Validator\Cms\CmsContentItemValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,7 +19,7 @@ class CmsContentItemController extends AbstractController
     public const CONTENT_ITEM = 'content-item';
 
     #[Route('/cms/content-item', name: 'cms_content_item_create', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em, CmsContentItemValidator $validator): JsonResponse
+    public function create(Request $request, EntityManagerInterface $em, CmsContentItemValidator $validator, CmsContentItemImporterInterface $cmsContentItemImporter): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         if (!$data) {
@@ -28,7 +28,7 @@ class CmsContentItemController extends AbstractController
 
         $data = $validator->validate($data);
 
-        $records = $this->importCmsContentItem($em, $data);
+        $records = $cmsContentItemImporter->importCmsContentItem($data);
 
         return $this->json([
             'status' => 'Cms content item created',
@@ -55,47 +55,5 @@ class CmsContentItemController extends AbstractController
             'status' => 'Cms content item deleted',
             'category_key' => $key,
         ]);
-    }
-
-    protected function importCmsContentItem(EntityManagerInterface $em, array $data): array
-    {
-        $cmsContentItemRepository = $em->getRepository(CmsContentItem::class);
-        $cmsBlockRepository = $em->getRepository(CmsBlock::class);
-
-        $created = [];
-        $updated = [];
-
-        foreach ($data[self::CONTENT_ITEM] as $cmsContentItemData) {
-            $cmsContentItem = $cmsContentItemRepository->findOneBy(['key' => $cmsContentItemData['key']]);
-            $cmsBlock = $cmsBlockRepository->findOneBy(['key' => $cmsContentItemData['parent_key']]);
-
-            if (!$cmsContentItem) {
-                $cmsContentItem = new CmsContentItem();
-                $cmsContentItem->setCreatedAt(new \DateTimeImmutable());
-                $created[] = 'CmsContentItem: ' . $cmsContentItemData['key'];
-            } else {
-                $updated[] = 'CmsContentItem: ' . $cmsContentItemData['key'];
-            }
-
-            if ($cmsBlock) {
-                $cmsContentItem->setFkCmsBlock($cmsBlock);
-            }
-
-            $cmsContentItem
-                ->setKey($cmsContentItemData['key'])
-                ->setName($cmsContentItemData['name'])
-                ->setData($cmsContentItemData['data'])
-                ->setUpdatedAt(new \DateTime());
-
-            $em->persist($cmsContentItem);
-            $em->persist($cmsBlock);
-        }
-
-        $em->flush();
-
-        return [
-            'created' => $created,
-            'updated' => $updated,
-        ];
     }
 }
