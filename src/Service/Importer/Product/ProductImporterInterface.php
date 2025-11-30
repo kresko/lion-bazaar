@@ -2,6 +2,8 @@
 
 namespace App\Service\Importer\Product;
 
+use App\Entity\Product;
+
 interface ProductImporterInterface
 {
     /**
@@ -26,4 +28,11 @@ interface ProductImporterInterface
      * @return array<string, mixed>
      */
     public function importProductUrls(array $data): array;
+
+    /**
+     * @param Product $product
+     * 
+     * @return void
+     */
+    public function removeProduct(Product $product): void;
 }

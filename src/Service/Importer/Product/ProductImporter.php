@@ -132,4 +132,27 @@ class ProductImporter implements ProductImporterInterface
 
         return $records;
     }
+
+    /**
+     * @param Product $product
+     * 
+     * @return void
+     */
+    public function removeProduct(Product $product): void
+    {
+        $urlRepository = $this->em->getRepository(Url::class);
+        $productCategoryRepository = $this->em->getRepository(ProductCategory::class);
+
+        $url = $urlRepository->findOneBy(['product' => $product->getId()]);
+        $productCategories = $productCategoryRepository->findBy(['fk_product' => $product->getId()]);
+
+        $this->em->remove($url);
+
+        foreach ($productCategories as $productCategory) {
+            $this->em->remove($productCategory);
+        }
+        
+        $this->em->remove($product);
+        $this->em->flush();
+    }
 }
