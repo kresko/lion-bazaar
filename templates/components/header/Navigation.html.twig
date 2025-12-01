@@ -1,5 +1,7 @@
+{% set navigationTree = this.getNavigationTree | default([])%}
+
 <ul>
-    {% for navigationItem in this.getNavigationTree %}
+    {% for navigationItem in navigationTree %}
         <li><a href="{{ navigationItem.url }}">{{ navigationItem.name }}</a></li>
     {% endfor %}
 </ul>
