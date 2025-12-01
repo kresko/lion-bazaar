@@ -17,7 +17,7 @@ final class FooterNavigation
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getFooterCmsNavigation(): array
     {
@@ -35,9 +35,9 @@ final class FooterNavigation
     }
 
     /**
-     * @param array $slotData
+     * @param array<string, mixed> $slotData
      *
-     * @return array
+     * @return array<array<array<string, mixed>>>
      */
     private function extractNavigationData(array $slotData): array
     {

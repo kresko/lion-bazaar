@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ProductControllerTest extends TestCase
 {
+    /**
+     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
+     */
     private $em;
 
     protected function setUp(): void

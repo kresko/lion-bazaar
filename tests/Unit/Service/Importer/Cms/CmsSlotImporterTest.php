@@ -46,7 +46,6 @@ class CmsSlotImporterTest extends TestCase
 
         $result = $this->importer->importCmsSlot($data);
 
-        $this->assertIsArray($result);
         $this->assertCount(1, $result['created']);
         $this->assertCount(0, $result['updated']);
         $this->assertCount(1, $persisted);
@@ -78,7 +77,6 @@ class CmsSlotImporterTest extends TestCase
 
         $result = $this->importer->importCmsSlot($data);
 
-        $this->assertIsArray($result);
         $this->assertCount(0, $result['created']);
         $this->assertCount(1, $result['updated']);
         $this->assertCount(1, $persisted);
@@ -105,7 +103,6 @@ class CmsSlotImporterTest extends TestCase
 
         $result = $this->importer->importCmsSlot($data);
 
-        $this->assertIsArray($result);
         $this->assertCount(2, $result['created']);
         $this->assertCount(0, $result['updated']);
         $this->assertCount(2, $persisted);
