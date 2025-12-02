@@ -3,7 +3,6 @@
 namespace App\Controller\Cms;
 
 use App\Entity\CmsBlock;
-use App\Entity\CmsSlot;
 use App\Service\Importer\Cms\CmsBlockImporterInterface;
 use App\Service\Validator\Cms\CmsBlockValidator;
 use Doctrine\ORM\EntityManagerInterface;
