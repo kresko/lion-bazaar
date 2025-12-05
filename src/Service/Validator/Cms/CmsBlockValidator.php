@@ -32,9 +32,9 @@ class CmsBlockValidator
     /**
      * Validates and sanitizes cms block data.
      *
-     * @param array $data
+     * @param array<string, mixed> $data
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function validate(array $data): array
     {

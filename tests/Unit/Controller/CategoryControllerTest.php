@@ -82,7 +82,7 @@ class CategoryControllerTest extends TestCase
             ->with(['error' => 'Invalid JSON'], 400)
             ->willReturn(new JsonResponse(['error' => 'Invalid JSON'], 400));
 
-        $response = $controller->create($request, $this->em, $validator, $importer);
+        $response = $controller->create($request, $validator, $importer);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(400, $response->getStatusCode());
@@ -111,7 +111,7 @@ class CategoryControllerTest extends TestCase
             }))
             ->willReturn(new JsonResponse(['status' => 'Category created']));
 
-        $response = $controller->create($request, $this->em, $validator, $importer);
+        $response = $controller->create($request, $validator, $importer);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Validator\Category;
+namespace App\Service\Validator\Product;
 
 class ProductValidator
 {

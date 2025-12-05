@@ -20,6 +20,9 @@ final class Navigation
         $this->navigationTreeRepository = $navigationTreeRepository;
     }
 
+    /**
+     * @return array<int,string>|null
+     */
     public function getNavigationTree(): ?array
     {
         $navigationTree = $this->navigationTreeRepository->getTreeJson();
