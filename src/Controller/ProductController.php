@@ -47,7 +47,7 @@ class ProductController extends AbstractController
             return $this->json(['error' => 'Product not found'], 404);
         }
 
-        $productImporter->removeProduct($product);        
+        $productImporter->removeProduct($product);
 
         return $this->json([
             'status' => 'Product deleted',

@@ -5,7 +5,7 @@ namespace App\Service\Importer\Cms;
 interface CmsSlotImporterInterface
 {
     /**
-     * @param array<string mixed> $data
+     * @param array<string, mixed> $data
      *
      * @return array<string, mixed>
      */

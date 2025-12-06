@@ -14,14 +14,17 @@ class NavigationTree
     #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
+    /**
+     * @var array<int, array<string, mixed>>
+     */
     #[ORM\Column(name: "tree_json", type: "json")]
-    private array $treeJson = [];
+    private ?array $treeJson = [];
 
     #[ORM\Column(type: "datetime_immutable")]
-    private ?\DateTimeImmutable $createdAt = null;
+    private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: "datetime")]
-    private ?\DateTime $updatedAt = null;
+    private \DateTime $updatedAt;
 
 
     public function getId(): ?int
@@ -29,23 +32,32 @@ class NavigationTree
         return $this->id;
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function getTreeJson(): array
     {
         return $this->treeJson;
     }
 
+    /**
+     * @param array<int, array<string, mixed>> $treeJson
+     * 
+     * @return self
+     */
     public function setTreeJson(array $treeJson): self
     {
         $this->treeJson = $treeJson;
+
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): ?\DateTime
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
@@ -54,7 +66,6 @@ class NavigationTree
     public function setCreatedAtValue(): void
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = new \DateTime();
     }
 
     #[ORM\PreUpdate]

@@ -26,10 +26,10 @@ class Url
     private string $url;
 
     #[ORM\Column(type: "datetime_immutable")]
-    private ?\DateTimeImmutable $createdAt = null;
+    private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: "datetime")]
-    private ?\DateTime $updatedAt = null;
+    private \DateTime $updatedAt;
 
     public function getId(): ?int
     {
@@ -85,7 +85,6 @@ class Url
     public function setCreatedAtValue(): void
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = new \DateTime();
     }
 
     #[ORM\PreUpdate]

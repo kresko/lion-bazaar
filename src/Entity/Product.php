@@ -14,32 +14,32 @@ class Product
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $category_key = null;
+    private string $category_key;
 
     #[ORM\Column(length: 255)]
-    private ?string $product_key = null;
+    private string $product_key;
 
     #[ORM\Column(length: 255)]
-    private ?string $sku = null;
+    private string $sku;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column(length: 255)]
-    private ?string $description = null;
+    private string $description;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private \DateTimeImmutable $created_at;
 
     #[ORM\Column]
-    private ?\DateTime $updated_at = null;
+    private \DateTime $updated_at;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCategoryKey(): ?string
+    public function getCategoryKey(): string
     {
         return $this->category_key;
     }
@@ -51,7 +51,7 @@ class Product
         return $this;
     }
 
-    public function getProductKey(): ?string
+    public function getProductKey(): string
     {
         return $this->product_key;
     }
@@ -63,7 +63,7 @@ class Product
         return $this;
     }
 
-    public function getSku(): ?string
+    public function getSku(): string
     {
         return $this->sku;
     }
@@ -75,7 +75,7 @@ class Product
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -87,7 +87,7 @@ class Product
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -99,7 +99,7 @@ class Product
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->created_at;
     }
@@ -111,7 +111,7 @@ class Product
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTime
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updated_at;
     }

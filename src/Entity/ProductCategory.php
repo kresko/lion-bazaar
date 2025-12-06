@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProductCategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Nullable;
 
 #[ORM\Entity(repositoryClass: ProductCategoryRepository::class)]
 class ProductCategory
@@ -11,19 +12,21 @@ class ProductCategory
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\ManyToOne()]
+    #[ORM\JoinColumn(nullable: false)]
     private Product $fk_product;
 
     #[ORM\ManyToOne()]
+    #[ORM\JoinColumn(nullable: false)]
     private Category $fk_category;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private \DateTimeImmutable $created_at;
 
     #[ORM\Column]
-    private ?\DateTime $updated_at = null;
+    private \DateTime $updated_at;
 
     public function getId(): ?int
     {
