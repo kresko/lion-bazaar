@@ -42,7 +42,7 @@ class NavigationTree
 
     /**
      * @param array<int, array<string, mixed>> $treeJson
-     * 
+     *
      * @return self
      */
     public function setTreeJson(array $treeJson): self

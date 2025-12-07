@@ -17,19 +17,22 @@ class CmsContentItem
     private ?CmsBlock $fk_cms_block = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $key = null;
+    private string $key;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private string $name;
 
+    /**
+     * @var array<string, mixed>|null
+     */
     #[ORM\Column(nullable: true)]
     private ?array $data = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private \DateTimeImmutable $created_at;
 
     #[ORM\Column(type: "datetime")]
-    private ?\DateTime $updated_at = null;
+    private \DateTime $updated_at;
 
     public function getId(): ?int
     {
@@ -48,7 +51,7 @@ class CmsContentItem
         return $this;
     }
 
-    public function getKey(): ?string
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -60,7 +63,7 @@ class CmsContentItem
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -72,11 +75,19 @@ class CmsContentItem
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>|null
+     */
     public function getData(): ?array
     {
         return $this->data;
     }
 
+    /**
+     * @param array<string, mixed>|null $data
+     *
+     * @return static
+     */
     public function setData(?array $data): static
     {
         $this->data = $data;
@@ -84,7 +95,7 @@ class CmsContentItem
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->created_at;
     }
@@ -96,7 +107,7 @@ class CmsContentItem
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updated_at;
     }
