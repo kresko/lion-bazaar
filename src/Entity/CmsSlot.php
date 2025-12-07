@@ -14,23 +14,23 @@ class CmsSlot
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $key = null;
+    private string $key;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private \DateTimeImmutable $created_at;
 
     #[ORM\Column(type: "datetime")]
-    private ?\DateTime $updated_at = null;
+    private \DateTime $updated_at;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getKey(): ?string
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -42,7 +42,7 @@ class CmsSlot
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -54,7 +54,7 @@ class CmsSlot
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->created_at;
     }
@@ -66,7 +66,7 @@ class CmsSlot
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updated_at;
     }

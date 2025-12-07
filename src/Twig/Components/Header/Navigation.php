@@ -21,12 +21,16 @@ final class Navigation
     }
 
     /**
-     * @return array<int,string>|null
+     * @return array<string, mixed>|null
      */
     public function getNavigationTree(): ?array
     {
         $navigationTree = $this->navigationTreeRepository->getTreeJson();
-        
-        return $navigationTree[0][static::CHILDREN] ?? null;
+
+        if (!$navigationTree) {
+            return null;
+        }
+
+        return $navigationTree[0][static::CHILDREN];
     }
 }

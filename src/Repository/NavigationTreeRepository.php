@@ -6,6 +6,9 @@ use App\Entity\NavigationTree;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<NavigationTree>
+ */
 class NavigationTreeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -13,6 +16,9 @@ class NavigationTreeRepository extends ServiceEntityRepository
         parent::__construct($registry, NavigationTree::class);
     }
 
+    /**
+     * @return array<int, array<string, mixed>>|null
+     */
     public function getTreeJson(): ?array
     {
         $navigationTree = $this->findOneBy([]);
@@ -21,8 +27,6 @@ class NavigationTreeRepository extends ServiceEntityRepository
             return null;
         }
 
-        $json = $navigationTree->getTreeJson();
-
-        return is_string($json) ? json_decode($json, true) : $json;
+        return $navigationTree->getTreeJson();
     }
 }

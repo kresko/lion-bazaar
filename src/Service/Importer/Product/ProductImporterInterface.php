@@ -15,15 +15,13 @@ interface ProductImporterInterface
 
     /**
      * @param array<string, mixed> $data
-     * @param array<string, mixed> $records
      *
-     * @return array<string, mixed>
+     * @return void
      */
     public function importProductCategoryMapping(array $data): void;
 
     /**
      * @param array<string, mixed> $data
-     * @param array<string, mixed> $records
      *
      * @return array<string, mixed>
      */
@@ -31,7 +29,7 @@ interface ProductImporterInterface
 
     /**
      * @param Product $product
-     * 
+     *
      * @return void
      */
     public function removeProduct(Product $product): void;

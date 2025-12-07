@@ -17,8 +17,7 @@ class ProductImporter implements ProductImporterInterface
     public function __construct(
         private EntityManagerInterface $em,
         private ProductUrlBuilderInterface $productUrlBuilder
-    )
-    {
+    ) {
     }
 
     public function importProducts(array $data): array
@@ -56,7 +55,7 @@ class ProductImporter implements ProductImporterInterface
         ];
     }
 
-     
+
     public function importProductCategoryMapping(array $data): void
     {
         $categoryRepository = $this->em->getRepository(Category::class);
@@ -91,10 +90,11 @@ class ProductImporter implements ProductImporterInterface
         $this->em->flush();
     }
 
-     public function importProductUrls(array $data): array
+    public function importProductUrls(array $data): array
     {
         $urlRepository = $this->em->getRepository(Url::class);
         $productRepository = $this->em->getRepository(Product::class);
+        $records = [];
 
         foreach ($data[self::PRODUCTS] as $productData) {
             $product = $productRepository->findOneBy(['product_key' => $productData['product_key']]);
@@ -112,7 +112,7 @@ class ProductImporter implements ProductImporterInterface
                 $url = new Url();
 
                 $url
-                    ->setCreatedAtValue(new \DateTimeImmutable());
+                    ->setCreatedAtValue();
 
                 $records['created'][] = 'Url: ' . $productData['product_key'];
             } else {
@@ -123,7 +123,7 @@ class ProductImporter implements ProductImporterInterface
                 ->setCategory(null)
                 ->setProduct($product)
                 ->setUrl('/p' . $productUrl)
-                ->setUpdatedAtValue(new \DateTime());
+                ->setUpdatedAtValue();
 
             $this->em->persist($url);
         }
@@ -135,7 +135,7 @@ class ProductImporter implements ProductImporterInterface
 
     /**
      * @param Product $product
-     * 
+     *
      * @return void
      */
     public function removeProduct(Product $product): void
@@ -151,7 +151,7 @@ class ProductImporter implements ProductImporterInterface
         foreach ($productCategories as $productCategory) {
             $this->em->remove($productCategory);
         }
-        
+
         $this->em->remove($product);
         $this->em->flush();
     }
